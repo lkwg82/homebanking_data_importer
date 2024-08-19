@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 @RequiredArgsConstructor
 @Slf4j
-class SopsDecryptor {
+public class SopsDecryptor {
     private static final String BIN_SOPS = "/home/linuxbrew/.linuxbrew/bin/sops";
     private final String filepath;
 
