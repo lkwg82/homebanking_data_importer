@@ -25,6 +25,11 @@
             <artifactId>keepassxc-proxy-access</artifactId>
             <version>1.2.5</version>
         </dependency>
+        <dependency>
+            <groupId>nl.garvelink.oss</groupId>
+            <artifactId>iban</artifactId>
+            <version>1.15.0</version>
+        </dependency>
 
         <!-- JUnit 5 -->
         <dependency>
