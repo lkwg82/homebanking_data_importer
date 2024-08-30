@@ -30,7 +30,7 @@ public class AccountStatusFileWriterTest {
         assertThat(tempdir.toFile()
                           .list()).hasSize(2);
 
-        Path directory1 = tempdir.resolve(Paths.get("DE75500105172221862318"));
+        Path directory1 = tempdir.resolve(Paths.get("DE75_5001_0517_2221_8623_18"));
         assertThat(directory1).isDirectory();
         String[] listing = directory1.toFile()
                                      .list();

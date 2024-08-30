@@ -79,8 +79,7 @@ public class DKBLoginPage {
             Locator title = current.locator(".sui-list-item__left-section__content__title");
             if (title.count() > 0) {
                 String name = title.textContent();
-                log.info("Name: {}",
-                         name);
+                log.info("Name: {}", name.strip());
 
                 String iban = current.getAttribute("aria-label")
                                      .split("IBAN ")[1];

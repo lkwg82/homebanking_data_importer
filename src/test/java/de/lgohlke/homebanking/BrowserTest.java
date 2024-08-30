@@ -3,14 +3,16 @@ package de.lgohlke.homebanking;
 import com.microsoft.playwright.BrowserContext;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.nio.file.Path;
 import java.util.List;
 
 public class BrowserTest {
 
     @Test
     @Disabled
-    void testBrowser() throws Exception {
+    void testBrowser(@TempDir Path tempdir) throws Exception {
 
         DKBKeepassCredentialsRetriever dkbKeepassCredentialsRetriever = new DKBKeepassCredentialsRetriever();
         LoginCredentials loginCredentials = dkbKeepassCredentialsRetriever.retrieve();
@@ -25,7 +27,7 @@ public class BrowserTest {
             dkbLoginPage.open();
             dkbLoginPage.login();
             List<AccountStatus> accountStatuses = dkbLoginPage.fetchAccountData();
-            System.out.println(accountStatuses);
+            new AccountStatusCSVWriter(tempdir).writeStatusesToCSV(accountStatuses);
         }
     }
 }

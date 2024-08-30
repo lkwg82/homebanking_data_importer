@@ -25,7 +25,7 @@ public class AccountStatusCSVWriter {
     private void writeSingleStatusToCSV(AccountStatus status) {
         String iban = status.iban()
                             .toString()
-                            .replace(" ", "");  // IBAN ohne Leerzeichen
+                            .replace(" ", "_");
         Path folderPath = dataDirectory.resolve(Paths.get(iban));
         createDirectoryIfNotExists(folderPath);
 
