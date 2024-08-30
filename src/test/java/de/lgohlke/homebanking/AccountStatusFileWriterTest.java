@@ -27,6 +27,9 @@ public class AccountStatusFileWriterTest {
         AccountStatusCSVWriter accountStatusCSVWriter = new AccountStatusCSVWriter(tempdir);
         accountStatusCSVWriter.writeStatusesToCSV(statuses);
 
+        assertThat(tempdir.toFile()
+                          .list()).hasSize(2);
+
         Path directory1 = tempdir.resolve(Paths.get("DE75500105172221862318"));
         assertThat(directory1).isDirectory();
         String[] listing = directory1.toFile()
