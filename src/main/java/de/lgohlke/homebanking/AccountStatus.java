@@ -9,7 +9,7 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Locale;
 
-record AccountStatus(Date date, IBAN iban, BigDecimal balance, String name) {
+public record AccountStatus(Date date, IBAN iban, BigDecimal balance, String name) {
     public static AccountStatus parse(String iban, String balance, String name) {
 
         Date now = Date.valueOf(LocalDate.now());
