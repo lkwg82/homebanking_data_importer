@@ -14,8 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class SopsDecryptorTest {
     @Test
-    @Disabled
-        // needs missing file
+    @Disabled("needs missing file")
     void testSopsDecryptor() {
         var sopsDecryptor = new SopsDecryptor("keepass.enc.yaml");
         var content = sopsDecryptor.getContent();

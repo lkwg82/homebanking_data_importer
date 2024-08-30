@@ -10,10 +10,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class KeepassCredentialRetrieverTest {
 
     @Test
-    @Disabled
-        // keepass needs unlocked
+    @Disabled("keepass needs unlocked")
     void test_setup_proxy() {
-        KeepassCredentialRetriever keepassCredentialRetriever = new KeepassCredentialRetriever();
+        KeepassProxyCredentialRetriever keepassCredentialRetriever = new KeepassProxyCredentialRetriever();
         Map<String, Object> logins = keepassCredentialRetriever.retrieveLoginsForUrl("https://banking.dkb.de");
         assertThat(logins).isNotEmpty();
     }

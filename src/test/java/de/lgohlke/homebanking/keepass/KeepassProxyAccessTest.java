@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class KeepassProxyAccessTest {
     @Test
-    @Disabled
+    @Disabled("learning test")
     public void helloWorld() {
         var kpa = new KeepassProxyAccess();
         if (kpa.connect()) {

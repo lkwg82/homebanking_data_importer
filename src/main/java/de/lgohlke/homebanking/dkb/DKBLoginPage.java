@@ -5,7 +5,8 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import de.lgohlke.homebanking.AccountStatus;
-import de.lgohlke.homebanking.LoginCredentials;
+import de.lgohlke.homebanking.BankingURL;
+import de.lgohlke.homebanking.LoginCredential;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +17,10 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class DKBLoginPage {
-    private final static String URL = "https://banking.dkb.de";
+    private final static String URL = BankingURL.DKB.getUrl();
 
     private final BrowserContext browserContext;
-    private final LoginCredentials credentials;
+    private final LoginCredential credentials;
 
     @Getter
     private Page page;

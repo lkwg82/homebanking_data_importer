@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class KeepassCredentialRetriever {
+public class KeepassProxyCredentialRetriever {
 
     public Map<String, Object> retrieveLoginsForUrl(String url) {
 

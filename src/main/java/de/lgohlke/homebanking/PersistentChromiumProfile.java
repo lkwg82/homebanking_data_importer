@@ -34,13 +34,17 @@ public class PersistentChromiumProfile {
     private AutoCloseable configureStorage() throws IOException {
         storage = retrieveStorageState();
         Browser.NewContextOptions options = new Browser.NewContextOptions();
-        if (storage.toFile()
-                   .length() > 0) { // not empty file
+        if (!isEmptyFile()) {
             options.setStorageStatePath(storage);
         }
         context = browser.newContext(options);
 
         return this::saveState;
+    }
+
+    private boolean isEmptyFile() {
+        return storage.toFile()
+                      .length() == 0;
     }
 
     private void saveState() {
