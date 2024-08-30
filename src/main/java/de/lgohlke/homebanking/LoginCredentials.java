@@ -1,4 +1,4 @@
 package de.lgohlke.homebanking;
 
-record LoginCredentials(String name, String password) {
+public record LoginCredentials(String name, String password) {
 }

@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 @RequiredArgsConstructor
 @Slf4j
-class PersistentChromiumProfile {
+public class PersistentChromiumProfile {
     private final String path;
     @Getter
     private Browser browser;

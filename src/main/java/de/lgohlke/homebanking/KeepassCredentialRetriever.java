@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-class KeepassCredentialRetriever {
+public class KeepassCredentialRetriever {
 
-    Map<String, Object> retrieveLoginsForUrl(String url) {
+    public Map<String, Object> retrieveLoginsForUrl(String url) {
 
         var sopsDecryptor = new SopsDecryptor("keepass.enc.yaml");
         String content = sopsDecryptor.getContent();

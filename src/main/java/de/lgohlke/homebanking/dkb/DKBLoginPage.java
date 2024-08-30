@@ -1,9 +1,11 @@
-package de.lgohlke.homebanking;
+package de.lgohlke.homebanking.dkb;
 
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import de.lgohlke.homebanking.AccountStatus;
+import de.lgohlke.homebanking.LoginCredentials;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +52,7 @@ public class DKBLoginPage {
 
                 while (mfa_waiting(page)) {
                     try {
+                        //noinspection BusyWait
                         Thread.sleep(3_000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
@@ -63,7 +66,7 @@ public class DKBLoginPage {
         }
     }
 
-    List<AccountStatus> fetchAccountData() {
+    public List<AccountStatus> fetchAccountData() {
 
         String selector = "[aria-label^='Umsatzliste von ']";
         page.waitForSelector(selector, new Page.WaitForSelectorOptions().setState(WaitForSelectorState.VISIBLE));

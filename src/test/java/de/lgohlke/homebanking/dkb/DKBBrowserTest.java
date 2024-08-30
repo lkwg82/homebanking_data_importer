@@ -1,6 +1,10 @@
-package de.lgohlke.homebanking;
+package de.lgohlke.homebanking.dkb;
 
 import com.microsoft.playwright.BrowserContext;
+import de.lgohlke.homebanking.AccountStatus;
+import de.lgohlke.homebanking.AccountStatusCSVWriter;
+import de.lgohlke.homebanking.LoginCredentials;
+import de.lgohlke.homebanking.PersistentChromiumProfile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -8,7 +12,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Path;
 import java.util.List;
 
-public class BrowserTest {
+public class DKBBrowserTest {
 
     @Test
     @Disabled
