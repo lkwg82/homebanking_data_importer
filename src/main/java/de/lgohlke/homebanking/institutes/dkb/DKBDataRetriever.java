@@ -1,4 +1,4 @@
-package de.lgohlke.homebanking.dkb;
+package de.lgohlke.homebanking.institutes.dkb;
 
 import com.microsoft.playwright.BrowserContext;
 import de.lgohlke.homebanking.AccountStatus;

@@ -1,4 +1,4 @@
-package de.lgohlke.homebanking.dkb;
+package de.lgohlke.homebanking.institutes.dkb;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
