@@ -3,11 +3,11 @@ package de.lgohlke.homebanking.institutes.dkb;
 import com.microsoft.playwright.BrowserContext;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.AccountStatusCSVWriter;
-import de.lgohlke.homebanking.BankingURL;
 import de.lgohlke.homebanking.DataFromBankRetriever;
-import de.lgohlke.homebanking.KeepassCredentialsRetriever;
 import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.PersistentChromiumProfile;
+import de.lgohlke.homebanking.institutes.BankingURL;
+import de.lgohlke.homebanking.keepass.KeepassCredentialsRetriever;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 

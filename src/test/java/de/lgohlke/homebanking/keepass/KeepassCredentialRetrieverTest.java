@@ -1,4 +1,4 @@
-package de.lgohlke.homebanking;
+package de.lgohlke.homebanking.keepass;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package de.lgohlke.homebanking;
+package de.lgohlke.homebanking.keepass;
 
 import de.lgohlke.homebanking.sops.SopsDecryptor;
 import lombok.extern.slf4j.Slf4j;

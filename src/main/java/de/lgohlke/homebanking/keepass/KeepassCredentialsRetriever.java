@@ -1,4 +1,7 @@
-package de.lgohlke.homebanking;
+package de.lgohlke.homebanking.keepass;
+
+import de.lgohlke.homebanking.LoginCredential;
+import de.lgohlke.homebanking.institutes.BankingURL;
 
 import java.util.List;
 import java.util.Map;

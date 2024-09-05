@@ -1,4 +1,4 @@
-package de.lgohlke.homebanking;
+package de.lgohlke.homebanking.institutes;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

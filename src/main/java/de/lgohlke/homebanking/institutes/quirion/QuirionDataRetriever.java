@@ -4,11 +4,11 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.AccountStatusCSVWriter;
-import de.lgohlke.homebanking.BankingURL;
 import de.lgohlke.homebanking.BrowserLauncher;
 import de.lgohlke.homebanking.DataFromBankRetriever;
-import de.lgohlke.homebanking.KeepassCredentialsRetriever;
 import de.lgohlke.homebanking.LoginCredential;
+import de.lgohlke.homebanking.institutes.BankingURL;
+import de.lgohlke.homebanking.keepass.KeepassCredentialsRetriever;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
