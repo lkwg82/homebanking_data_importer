@@ -37,10 +37,6 @@ public class DKBLoginPage {
                            .textContent();
         if (headline.equals("Mein Banking")) {
 
-            Locator cookieBanner = page.locator("button.btn.refuse-all");
-            if (cookieBanner.count() > 0) {
-                cookieBanner.click();
-            }
 
             page.locator("#username")
                 .fill(credentials.name());
