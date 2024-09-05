@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-class QuirionDataRetriever implements DataFromBankRetriever {
+public class QuirionDataRetriever implements DataFromBankRetriever {
     private final Path dataDir;
 
     @Override
