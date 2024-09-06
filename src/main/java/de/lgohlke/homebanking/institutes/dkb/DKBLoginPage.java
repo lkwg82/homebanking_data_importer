@@ -3,6 +3,7 @@ package de.lgohlke.homebanking.institutes.dkb;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.LoginCredential;
@@ -26,6 +27,8 @@ public class DKBLoginPage {
     private Page page;
 
     public void open() {
+        List<Cookie> privacySettingCookies = createPrivacySettingCookies();
+        browserContext.addCookies(privacySettingCookies);
         page = browserContext.newPage();
         page.navigate(URL);
         page.waitForLoadState();
@@ -61,6 +64,18 @@ public class DKBLoginPage {
         } else {
             System.out.println("Headline: " + headline);
         }
+    }
+
+    private List<Cookie> createPrivacySettingCookies() {
+        Cookie tcPrivacy = new Cookie("TC_PRIVACY",
+                                      "1%40006%7C47%7C4898%40%401%401725603940191%2C1725603940191%2C1759299940191%40")
+                .setDomain(".dkb.de")
+                .setPath("/");
+        Cookie tcPrivacy2 = new Cookie("TC_PRIVACY_CENTER", "")
+                .setDomain(".dkb.de")
+                .setPath("/");
+
+        return List.of(tcPrivacy, tcPrivacy2);
     }
 
     public List<AccountStatus> fetchAccountData() {
