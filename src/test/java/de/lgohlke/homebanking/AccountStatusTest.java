@@ -20,7 +20,20 @@ public class AccountStatusTest {
 
         assertThat(status.iban()
                          .toPlainString()).isEqualTo("DE75500105172221862318");
-        assertThat(status.balance()).isEqualTo("2123.54");
+        assertThat(status.balanceAsStr()).isEqualTo("2123,54");
+        assertThat(status.name()).isEqualTo("Tagesgeld - Otto");
+    }
+
+    @Test
+    void test_account_status_with_zeros() {
+        Date date = Date.valueOf(LocalDate.of(2024, 8, 27));
+
+        AccountStatus status = AccountStatus.parse(date, IBAN, "2.123,00 €",
+                                                   "Tagesgeld - Otto");
+
+        assertThat(status.iban()
+                         .toPlainString()).isEqualTo("DE75500105172221862318");
+        assertThat(status.balanceAsStr()).isEqualTo("2123,00");
         assertThat(status.name()).isEqualTo("Tagesgeld - Otto");
     }
 

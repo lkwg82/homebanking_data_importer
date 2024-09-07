@@ -2,6 +2,7 @@ package de.lgohlke.homebanking;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.garvelink.iban.IBAN;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,15 +35,26 @@ public class AccountStatusCSVWriter {
 
     public void writeSummaryToCSV() {
         List<AccountStatus> accountStatuses = collectStatuses();
-        var statusLines = accountStatuses.stream()
-                                         .map(AccountStatusCSVWriter::convertAccountStatusToCSVLine)
-                                         .collect(Collectors.joining("\n"));
+
+        var statusLines = groupByDateIBAN(accountStatuses).stream()
+                                                          .map(AccountStatusCSVWriter::convertAccountStatusToCSVLine)
+                                                          .collect(Collectors.joining("\n"));
         try {
             log.info("writing {}", SUMMARY_CSV);
             Files.writeString(dataDirectory.resolve(SUMMARY_CSV), statusLines);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<AccountStatus> groupByDateIBAN(List<AccountStatus> statuses) {
+        Function<AccountStatus, DateAndIBAN> classifier = status -> new DateAndIBAN(status.date(), status.iban());
+        Map<DateAndIBAN, List<AccountStatus>> map = statuses.stream()
+                                                            .collect(Collectors.groupingBy(classifier));
+        return map.values()
+                  .stream()
+                  .map(List::getFirst)
+                  .toList();
     }
 
     private List<AccountStatus> collectStatuses() {
@@ -117,8 +131,29 @@ public class AccountStatusCSVWriter {
         return String.format("%s|%s|%s|%s",
                              status.date(),
                              status.iban(),
-                             status.balance(),
+                             status.balanceAsStr(),
                              status.name()
         );
+    }
+
+    @RequiredArgsConstructor
+    private static class DateAndIBAN {
+        private final Date date;
+        private final IBAN iban;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            DateAndIBAN that = (DateAndIBAN) o;
+            boolean sameDate = date.getTime() == that.date.getTime();
+            boolean sameIBAN = Objects.equals(iban, that.iban);
+            return sameDate && sameIBAN;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(date, iban);
+        }
     }
 }
