@@ -123,7 +123,10 @@
     </build>
     <profiles>
         <profile>
-            <id>jar</id>
+            <id>fatjar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
