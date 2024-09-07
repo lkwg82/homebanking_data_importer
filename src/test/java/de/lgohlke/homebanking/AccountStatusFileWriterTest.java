@@ -54,8 +54,9 @@ public class AccountStatusFileWriterTest {
 
         AccountStatusCSVWriter accountStatusCSVWriter = new AccountStatusCSVWriter(tempdir);
         accountStatusCSVWriter.writeStatusesToCSV(statuses);
+        DataFromBankRetriever retriever = new MyDataFromBankRetriever(tempdir);
 
-        accountStatusCSVWriter.writeSummaryToCSV(); // test
+        accountStatusCSVWriter.writeSummaryToCSV(retriever.collect()); // test
 
         Path summary = tempdir.resolve("summary.csv");
         assertThat(summary).isNotEmptyFile();
@@ -77,12 +78,27 @@ public class AccountStatusFileWriterTest {
         );
         AccountStatusCSVWriter accountStatusCSVWriter = new AccountStatusCSVWriter(tempdir);
         accountStatusCSVWriter.writeStatusesToCSV(statuses);
+        DataFromBankRetriever retriever = new MyDataFromBankRetriever(tempdir);
 
-        accountStatusCSVWriter.writeSummaryToCSV(); // test
+        accountStatusCSVWriter.writeSummaryToCSV(retriever.collect()); // test
+
         Path summary = tempdir.resolve("summary.csv");
         assertThat(summary).isNotEmptyFile();
 
         List<String> lines = Files.readAllLines(summary);
         assertThat(lines).hasSize(3);
+    }
+
+    private record MyDataFromBankRetriever(Path tempdir) implements DataFromBankRetriever {
+
+        @Override
+        public void fetchData() {
+            // ok
+        }
+
+        @Override
+        public Path dataDirectory() {
+            return tempdir;
+        }
     }
 }

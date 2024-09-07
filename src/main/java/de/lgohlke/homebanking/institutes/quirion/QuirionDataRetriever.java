@@ -9,21 +9,17 @@ import de.lgohlke.homebanking.DataFromBankRetriever;
 import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.institutes.BankingURL;
 import de.lgohlke.homebanking.keepass.KeepassCredentialsRetriever;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
-public class QuirionDataRetriever implements DataFromBankRetriever {
-    private final Path dataDir;
-
+public record QuirionDataRetriever(Path dataDirectory) implements DataFromBankRetriever {
     @Override
     public void fetchData() {
         KeepassCredentialsRetriever dkbKeepassCredentialsRetriever = new KeepassCredentialsRetriever();
-        AccountStatusCSVWriter accountStatusCSVWriter = new AccountStatusCSVWriter(dataDir);
+        AccountStatusCSVWriter accountStatusCSVWriter = new AccountStatusCSVWriter(dataDirectory);
 
         for (LoginCredential loginCredential : dkbKeepassCredentialsRetriever.retrieveFor(BankingURL.QUIRION)) {
             try (Browser browser = BrowserLauncher.createChromium()) {
@@ -36,10 +32,5 @@ public class QuirionDataRetriever implements DataFromBankRetriever {
                 accountStatusCSVWriter.writeStatusesToCSV(accountStatuses);
             }
         }
-    }
-
-    @Override
-    public void collectAndWriteSummary() {
-        new AccountStatusCSVWriter(dataDir).writeSummaryToCSV();
     }
 }

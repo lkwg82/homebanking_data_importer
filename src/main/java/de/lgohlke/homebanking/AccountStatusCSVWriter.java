@@ -2,26 +2,18 @@ package de.lgohlke.homebanking;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import nl.garvelink.iban.IBAN;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -33,55 +25,16 @@ public class AccountStatusCSVWriter {
         statuses.forEach(this::writeSingleStatusToCSV);
     }
 
-    public void writeSummaryToCSV() {
-        List<AccountStatus> accountStatuses = collectStatuses();
-
-        var statusLines = groupByDateIBAN(accountStatuses).stream()
-                                                          .map(AccountStatusCSVWriter::convertAccountStatusToCSVLine)
-                                                          .collect(Collectors.joining("\n"));
+    public void writeSummaryToCSV(Collection<AccountStatus> statuses) {
+        var statusLines = statuses.stream()
+                                  .map(AccountStatusCSVWriter::convertAccountStatusToCSVLine)
+                                  .collect(Collectors.joining("\n"));
         try {
             log.info("writing {}", SUMMARY_CSV);
             Files.writeString(dataDirectory.resolve(SUMMARY_CSV), statusLines);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private List<AccountStatus> groupByDateIBAN(List<AccountStatus> statuses) {
-        Function<AccountStatus, DateAndIBAN> classifier = status -> new DateAndIBAN(status.date(), status.iban());
-        Map<DateAndIBAN, List<AccountStatus>> map = statuses.stream()
-                                                            .collect(Collectors.groupingBy(classifier));
-        return map.values()
-                  .stream()
-                  .map(List::getFirst)
-                  .toList();
-    }
-
-    private List<AccountStatus> collectStatuses() {
-        FileFilter dirFilter = File::isDirectory;
-        FileFilter csvFileFilter = pathname -> pathname.isFile() && pathname.getPath().endsWith(".csv");
-        File[] dirs = dataDirectory.toFile().listFiles(dirFilter);
-        return Stream.of(Objects.requireNonNull(dirs))
-                     .map(dir -> dir.listFiles(csvFileFilter))
-                     .filter(Objects::nonNull)
-                     .flatMap(Arrays::stream)
-                     .map(file -> {
-                         try {
-                             List<String> lines = Files.readAllLines(file.toPath());
-                             if (lines.size() == 2) {
-                                 return lines.get(1);
-                             }
-                             throw new IllegalStateException("should have two lines");
-                         } catch (IOException e) {
-                             throw new RuntimeException(e);
-                         }
-                     }).map(line -> {
-                    String[] parts = line.split("\\|");
-                    if (parts.length == 4) {
-                        return AccountStatus.parse(Date.valueOf(parts[0]), parts[1], parts[2], parts[3]);
-                    }
-                    return null;
-                }).filter(Objects::nonNull).toList();
     }
 
     private void writeSingleStatusToCSV(AccountStatus status) {
@@ -134,26 +87,5 @@ public class AccountStatusCSVWriter {
                              status.balanceAsStr(),
                              status.name()
         );
-    }
-
-    @RequiredArgsConstructor
-    private static class DateAndIBAN {
-        private final Date date;
-        private final IBAN iban;
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            DateAndIBAN that = (DateAndIBAN) o;
-            boolean sameDate = date.getTime() == that.date.getTime();
-            boolean sameIBAN = Objects.equals(iban, that.iban);
-            return sameDate && sameIBAN;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(date, iban);
-        }
     }
 }

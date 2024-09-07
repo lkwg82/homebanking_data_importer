@@ -15,21 +15,16 @@ public class QuirionDataRetrieverTest {
     void testBrowser(@TempDir() Path tempdir) {
         QuirionDataRetriever quirionDataRetriever = new QuirionDataRetriever(tempdir);
         quirionDataRetriever.fetchData();
-        quirionDataRetriever.collectAndWriteSummary();
 
         assertThat(tempdir).isNotEmptyDirectory();
 
         File[] files = tempdir.toFile().listFiles();
-        assertThat(files).hasSize(4);
+        assertThat(files).hasSize(3);
 
         for (File ibanDir : files) {
-            if (ibanDir.isFile()) {
-                assertThat(ibanDir).hasFileName("summary.csv");
-            } else {
-                assertThat(ibanDir).isNotEmptyDirectory();
-                File[] statusFiles = ibanDir.listFiles();
-                assertThat(statusFiles[0]).isNotEmpty();
-            }
+            assertThat(ibanDir).isNotEmptyDirectory();
+            File[] statusFiles = ibanDir.listFiles();
+            assertThat(statusFiles[0]).isNotEmpty();
         }
     }
 }

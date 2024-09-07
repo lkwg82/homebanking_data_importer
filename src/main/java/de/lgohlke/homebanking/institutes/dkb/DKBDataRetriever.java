@@ -7,15 +7,13 @@ import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.PersistentChromiumProfile;
 import de.lgohlke.homebanking.institutes.BankingURL;
 import de.lgohlke.homebanking.keepass.KeepassCredentialsRetriever;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.nio.file.Path;
 import java.util.List;
 
-@RequiredArgsConstructor
-public class DKBDataRetriever implements DataFromBankRetriever {
-    private final Path dataDir;
+
+public record DKBDataRetriever(Path dataDirectory) implements DataFromBankRetriever {
 
     @SneakyThrows
     @Override
@@ -33,12 +31,7 @@ public class DKBDataRetriever implements DataFromBankRetriever {
             dkbLoginPage.open();
             dkbLoginPage.login();
             List<AccountStatus> accountStatuses = dkbLoginPage.fetchAccountData();
-            new AccountStatusCSVWriter(dataDir).writeStatusesToCSV(accountStatuses);
+            new AccountStatusCSVWriter(dataDirectory).writeStatusesToCSV(accountStatuses);
         }
-    }
-
-    @Override
-    public void collectAndWriteSummary() {
-        new AccountStatusCSVWriter(dataDir).writeSummaryToCSV();
     }
 }
