@@ -37,4 +37,9 @@ public class QuirionDataRetriever implements DataFromBankRetriever {
             }
         }
     }
+
+    @Override
+    public void collectAndWriteSummary() {
+        new AccountStatusCSVWriter(dataDir).writeSummaryToCSV();
+    }
 }

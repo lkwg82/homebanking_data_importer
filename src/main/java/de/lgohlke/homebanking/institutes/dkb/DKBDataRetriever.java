@@ -36,4 +36,9 @@ public class DKBDataRetriever implements DataFromBankRetriever {
             new AccountStatusCSVWriter(dataDir).writeStatusesToCSV(accountStatuses);
         }
     }
+
+    @Override
+    public void collectAndWriteSummary() {
+        new AccountStatusCSVWriter(dataDir).writeSummaryToCSV();
+    }
 }

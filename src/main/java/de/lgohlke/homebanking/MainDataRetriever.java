@@ -21,7 +21,10 @@ public class MainDataRetriever {
         List<DataFromBankRetriever> retrievers = List.of(new DKBDataRetriever(dataDir.resolve("dkb")),
                                                          new QuirionDataRetriever(dataDir.resolve("quirion")));
 
-        retrievers.forEach(DataFromBankRetriever::fetchData);
+        for (DataFromBankRetriever retriever : retrievers) {
+            retriever.fetchData();
+            retriever.collectAndWriteSummary();
+        }
         System.out.println(dataDir);
     }
 }
