@@ -36,7 +36,9 @@ public class KeepassProxyCredentialRetriever {
         } finally {
             if (keepassProxyAccess.connect()) {
                 log.info("closing");
+                keepassProxyAccess.shutdown();
                 keepassProxyAccess.closeConnection();
+                keepassProxyAccess.getScheduler().shutdownNow();
             }
         }
     }
