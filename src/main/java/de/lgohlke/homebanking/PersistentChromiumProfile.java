@@ -23,7 +23,11 @@ public class PersistentChromiumProfile {
 
     public AutoCloseable openBrowser() throws IOException {
         browser = BrowserLauncher.createChromium();
-        return configureStorage();
+        AutoCloseable configuredStorage = configureStorage();
+        return () -> {
+            configuredStorage.close();
+            context.close();
+        };
     }
 
     public AutoCloseable openHeadlessBrowser() throws IOException {

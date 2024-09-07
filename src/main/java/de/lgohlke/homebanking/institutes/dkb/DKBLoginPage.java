@@ -90,21 +90,19 @@ public class DKBLoginPage {
         Locator elementsWithAriaLabel = page.locator(selector);
         int count = elementsWithAriaLabel.count();
         for (int i = 0; i < count; i++) {
+//            log.info("current");
             Locator current = elementsWithAriaLabel.nth(i);
+            current.evaluate("element => element.style.border = '2px solid red'");
+//            log.info("title");
             Locator title = current.locator(".sui-list-item__left-section__content__title");
             if (title.count() > 0) {
                 String name = title.textContent();
-                log.info("Name: {}", name.strip());
-
+                log.info("name: {}", name);
                 String iban = current.getAttribute("aria-label")
                                      .split("IBAN ")[1];
-                log.info("IBAN {}", iban);
                 String balance = current.locator("p")
-                                        .nth(1)
+                                        .nth(0)
                                         .textContent();
-
-                log.info("Balance {}", balance);
-                System.out.println();
 
                 AccountStatus status = AccountStatus.parse(iban, balance, name);
                 accountStatuses.add(status);
@@ -120,7 +118,7 @@ public class DKBLoginPage {
             page.evaluate("window.scrollBy(0, " + viewportHeight + ")");
             scrollHeight += viewportHeight;
 
-            page.waitForTimeout(1000); // 1 Sekunde warten
+            page.waitForTimeout(2_000); // 2 Sekunde warten
         }
 
         log.info("runterscrollen");

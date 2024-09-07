@@ -1,6 +1,5 @@
 package de.lgohlke.homebanking.institutes.dkb;
 
-import com.microsoft.playwright.BrowserContext;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.AccountStatusCSVWriter;
 import de.lgohlke.homebanking.DataFromBankRetriever;
@@ -29,8 +28,7 @@ public class DKBDataRetriever implements DataFromBankRetriever {
         PersistentChromiumProfile profile = new PersistentChromiumProfile(path);
 
         try (var ignored = profile.openBrowser()) {
-            BrowserContext context = profile.getContext();
-
+            var context = profile.getContext();
             DKBLoginPage dkbLoginPage = new DKBLoginPage(context, loginCredential);
             dkbLoginPage.open();
             dkbLoginPage.login();
