@@ -19,18 +19,25 @@ public class KeepassProxyCredentialRetriever {
         var key = lines[1].replaceFirst("key: ", "");
 
         KeepassProxyAccess keepassProxyAccess = new KeepassProxyAccess();
-        if (keepassProxyAccess.connect()) {
-            log.info("connected");
-        } else {
-            throw new IllegalStateException("connection failed");
-        }
-        if (keepassProxyAccess.testAssociate(id, key)) {
-            log.info("keepass works");
-        } else {
-            throw new IllegalStateException("no connection to keepass");
-        }
+        try {
+            if (keepassProxyAccess.connect()) {
+                log.info("connected");
+            } else {
+                throw new IllegalStateException("connection failed");
+            }
+            if (keepassProxyAccess.testAssociate(id, key)) {
+                log.info("keepass works");
+            } else {
+                throw new IllegalStateException("no connection to keepass");
+            }
 
-        var id_key_map = List.of(Map.of("id", id, "key", key));
-        return keepassProxyAccess.getLogins(url, "", true, id_key_map);
+            var id_key_map = List.of(Map.of("id", id, "key", key));
+            return keepassProxyAccess.getLogins(url, "", true, id_key_map);
+        } finally {
+            if (keepassProxyAccess.connect()) {
+                log.info("closing");
+                keepassProxyAccess.closeConnection();
+            }
+        }
     }
 }
