@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum BankingURL {
     DKB("https://banking.dkb.de"),
     QUIRION("https://banking.quirion.de"),
+    SCALABLECAPITAL("https://secure.scalable.capital"),
     TRADEREPUBLIC("https://app.traderepublic.com/login");
 
     private final String url;
