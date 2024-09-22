@@ -17,7 +17,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class DKBLoginPage {
+public class DKBPage {
     private final static String URL = BankingURL.DKB.getUrl();
 
     private final BrowserContext browserContext;

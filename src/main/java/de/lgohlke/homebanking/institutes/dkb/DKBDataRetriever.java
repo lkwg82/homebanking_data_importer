@@ -27,7 +27,7 @@ public record DKBDataRetriever(Path dataDirectory) implements DataFromBankRetrie
 
         try (var ignored = profile.openBrowser()) {
             var context = profile.getContext();
-            DKBLoginPage dkbLoginPage = new DKBLoginPage(context, loginCredential);
+            DKBPage dkbLoginPage = new DKBPage(context, loginCredential);
             dkbLoginPage.open();
             dkbLoginPage.login();
             List<AccountStatus> accountStatuses = dkbLoginPage.fetchAccountData();
