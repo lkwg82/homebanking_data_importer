@@ -6,6 +6,7 @@ import com.microsoft.playwright.Page;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.institutes.BankingURL;
+import de.lgohlke.homebanking.institutes.InstitutePage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-class TradeRepublicPage {
+class TradeRepublicPage implements InstitutePage {
     private final static String URL = BankingURL.TRADEREPUBLIC.getUrl();
 
     private final BrowserContext browserContext;
@@ -23,6 +24,7 @@ class TradeRepublicPage {
     @Getter
     private Page page;
 
+    @SneakyThrows
     public void open() {
         page = browserContext.newPage();
 

@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.institutes.BankingURL;
+import de.lgohlke.homebanking.institutes.InstitutePage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-class QuirionPage {
+class QuirionPage implements InstitutePage {
     private final static String URL = BankingURL.QUIRION.getUrl();
     private final BrowserContext browserContext;
     private final LoginCredential credentials;
