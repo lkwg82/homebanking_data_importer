@@ -2,6 +2,7 @@ package de.lgohlke.homebanking;
 
 import de.lgohlke.homebanking.institutes.dkb.DKBDataRetriever;
 import de.lgohlke.homebanking.institutes.quirion.QuirionDataRetriever;
+import de.lgohlke.homebanking.institutes.traderepublic.TradeRepublicDataRetriever;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +21,9 @@ public class MainDataRetriever {
 
     void execute(Path dataDir) {
         List<DataFromBankRetriever> retrievers = List.of(new DKBDataRetriever(dataDir.resolve("dkb")),
-                                                         new QuirionDataRetriever(dataDir.resolve("quirion")));
+                                                         new QuirionDataRetriever(dataDir.resolve("quirion")),
+                                                         new TradeRepublicDataRetriever(dataDir.resolve("traderepublic"))
+        );
 
         List<AccountStatus> statuses = retrievers.stream()
                                                  .map(retriever -> {

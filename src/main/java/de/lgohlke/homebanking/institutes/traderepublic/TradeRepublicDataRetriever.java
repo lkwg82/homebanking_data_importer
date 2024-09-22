@@ -12,7 +12,7 @@ import lombok.SneakyThrows;
 import java.nio.file.Path;
 import java.util.List;
 
-record TradeRepublicDataRetriever(Path dataDirectory) implements DataFromBankRetriever {
+public record TradeRepublicDataRetriever(Path dataDirectory) implements DataFromBankRetriever {
     @SneakyThrows
     @Override
     public void fetchData() {
