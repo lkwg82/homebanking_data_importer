@@ -41,24 +41,17 @@ public class ScalableCapitalPage implements InstitutePage {
 
     @SneakyThrows
     public void login() {
+        denyCookies();
 
-        Thread.sleep(1000);
-        Locator denyCookies = page.locator("button[data-testid='uc-deny-all-button']");
-        if (denyCookies.count() > 0) {
-            denyCookies.click();
-        }
-        Locator phoneNumber = page.locator("#loginPhoneNumber__input");
-        if (phoneNumber.count() > 0) {
-            phoneNumber.fill(credentials.name());
-            Thread.sleep(1_000); // not too fast, not to trigger agent detection
-            page.locator(".loginPhoneNumber__action").click();
+        page.locator("#page a.login").nth(1).click();
+        page.waitForLoadState();
 
-            String password = credentials.password();
-            Locator locator2 = page.locator(".loginPin__field");
-            for (int i = 0; i < 4; i++) {
-                String pin_at_pos = password.substring(i, i + 1);
-                locator2.pressSequentially(pin_at_pos);
-            }
+        Locator locator = page.locator("input#username");
+        if (locator.count() > 0) {
+            locator.fill(credentials.name());
+            page.locator("input#password").fill(credentials.password());
+            page.click("text='Login'");
+
 
             if (mfa_waiting(page)) {
                 log.warn(">>>> MFA bestätigen");
@@ -78,23 +71,31 @@ public class ScalableCapitalPage implements InstitutePage {
         }
     }
 
+    private void denyCookies() throws InterruptedException {
+        Thread.sleep(1000);
+        Locator denyCookies = page.locator("button[data-testid='uc-deny-all-button']");
+        if (denyCookies.count() > 0) {
+            denyCookies.click();
+        }
+    }
+
     private boolean mfa_waiting(Page page) {
-        return page.locator("xpath=//h2[text()='Gib den Bestätigungscode ein']")
+        return page.locator("xpath=//p[text()='Verifizieren Sie Ihren Login']")
                    .count() > 0;
     }
 
     @SneakyThrows
     public List<AccountStatus> fetchAccountData() {
-        page.navigate("https://app.traderepublic.com/settings/accounts");
+        page.navigate("https://de.scalable.capital/cockpit/account/products");
         page.waitForLoadState();
-        String iban = page.locator("xpath=//dt[text()='IBAN']/following-sibling::dd[1]").textContent();
+        String iban = page.locator("[data-testid='iban']").textContent();
 
-        page.navigate("https://app.traderepublic.com/profile/transactions");
+        page.navigate("https://de.scalable.capital/broker/cash");
         page.waitForLoadState();
         Thread.sleep(1_000);
 
-        String balanceStr = page.locator(".cashBalance__amount").textContent();
-        AccountStatus status = AccountStatus.parse(iban, balanceStr, "TradeRepublic");
+        String balanceStr = page.locator("xpath=//div[text()='Kontostand']/preceding-sibling::div").textContent();
+        AccountStatus status = AccountStatus.parse(iban, balanceStr, "ScalableCapital");
         return List.of(status);
     }
 }
