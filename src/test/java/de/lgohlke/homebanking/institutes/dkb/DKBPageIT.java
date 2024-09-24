@@ -1,29 +1,28 @@
-package de.lgohlke.homebanking.institutes.scalablecapital;
+package de.lgohlke.homebanking.institutes.dkb;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import de.lgohlke.homebanking.BrowserLauncher;
 import de.lgohlke.homebanking.LoginCredential;
-import de.lgohlke.homebanking.institutes.InstitutePage;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ScalableCapitalPageTest {
+class DKBPageIT {
     @Test
     void test_login_Page() {
         try (Browser browser = BrowserLauncher.createChromium()) {
             BrowserContext context = browser.newContext();
             LoginCredential credential = new LoginCredential("name", "password");
-            InstitutePage iPage = new ScalableCapitalPage(context, credential);
+            DKBPage dkbPage = new DKBPage(context, credential);
 
-            iPage.open(); // action
+            dkbPage.open(); // action
 
-            Page page = iPage.getPage();
-            String headline = page.locator("#page div > h2").textContent();
+            Page page = dkbPage.getPage();
+            String headline = page.locator("h1").textContent();
 
-            assertThat(headline).isEqualTo("Investierenfür alle");
+            assertThat(headline).isEqualTo("Mein Banking");
         }
     }
 }

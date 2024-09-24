@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class QuirionPageTest {
+class QuirionPageIT {
     @Test
     void test_login_Page() {
         try (Browser browser = BrowserLauncher.createChromium()) {

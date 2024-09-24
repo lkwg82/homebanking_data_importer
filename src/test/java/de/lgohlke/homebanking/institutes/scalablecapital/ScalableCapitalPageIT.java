@@ -1,4 +1,4 @@
-package de.lgohlke.homebanking.institutes.traderepublic;
+package de.lgohlke.homebanking.institutes.scalablecapital;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class TradeRepublicPageTest {
+class ScalableCapitalPageIT {
     @Test
     void test_login_Page() {
         try (Browser browser = BrowserLauncher.createChromium()) {
             BrowserContext context = browser.newContext();
             LoginCredential credential = new LoginCredential("name", "password");
-            InstitutePage iPage = new TradeRepublicPage(context, credential);
+            InstitutePage iPage = new ScalableCapitalPage(context, credential);
 
             iPage.open(); // action
 
             Page page = iPage.getPage();
-            String headline = page.locator(".loginPhoneNumber h2").textContent();
+            String headline = page.locator("#page div > h2").textContent();
 
-            assertThat(headline).isEqualTo("Gib deine Telefonnummer ein");
+            assertThat(headline).isEqualTo("Investierenfür alle");
         }
     }
 }
