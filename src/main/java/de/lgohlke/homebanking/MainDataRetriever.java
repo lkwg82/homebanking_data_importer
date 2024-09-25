@@ -1,7 +1,7 @@
 package de.lgohlke.homebanking;
 
-import de.lgohlke.homebanking.institutes.dkb.DKBDataRetriever;
-import de.lgohlke.homebanking.institutes.quirion.QuirionDataRetriever;
+import com.microsoft.playwright.Browser;
+import de.lgohlke.homebanking.institutes.scalablecapital.ScalableCapitalDataRetriever;
 import de.lgohlke.homebanking.institutes.traderepublic.TradeRepublicDataRetriever;
 
 import java.nio.file.Path;
@@ -20,19 +20,22 @@ public class MainDataRetriever {
     }
 
     void execute(Path dataDir) {
-        List<DataFromBankRetriever> retrievers = List.of(new DKBDataRetriever(dataDir.resolve("dkb")),
-                                                         new QuirionDataRetriever(dataDir.resolve("quirion")),
-                                                         new TradeRepublicDataRetriever(dataDir.resolve("traderepublic"))
+        List<DataFromBankRetriever> retrievers = List.of(
+//                new DKBDataRetriever(dataDir.resolve("dkb")),
+//                new QuirionDataRetriever(dataDir.resolve("quirion")),
+                new TradeRepublicDataRetriever(dataDir.resolve("traderepublic")),
+                new ScalableCapitalDataRetriever(dataDir.resolve("scalablecapital"))
         );
-
-        List<AccountStatus> statuses = retrievers.stream()
-                                                 .map(retriever -> {
-                                                     retriever.fetchData();
-                                                     return retriever.collect();
-                                                 })
-                                                 .flatMap(Set::stream)
-                                                 .toList();
-        new AccountStatusCSVWriter(dataDir).writeSummaryToCSV(statuses);
-        System.out.println(dataDir);
+        try (Browser browser = BrowserLauncher.createChromium()) {
+            List<AccountStatus> statuses = retrievers.stream()
+                                                     .map(retriever -> {
+                                                         retriever.fetchData(browser);
+                                                         return retriever.collect();
+                                                     })
+                                                     .flatMap(Set::stream)
+                                                     .toList();
+            new AccountStatusCSVWriter(dataDir).writeSummaryToCSV(statuses);
+            System.out.println(dataDir);
+        }
     }
 }

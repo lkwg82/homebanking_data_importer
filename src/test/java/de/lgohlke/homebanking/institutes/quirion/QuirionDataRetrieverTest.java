@@ -1,5 +1,7 @@
 package de.lgohlke.homebanking.institutes.quirion;
 
+import com.microsoft.playwright.Browser;
+import de.lgohlke.homebanking.BrowserLauncher;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -14,7 +16,9 @@ public class QuirionDataRetrieverTest {
     @Disabled(value = "keepass needs unlocked")
     void testBrowser(@TempDir() Path tempdir) {
         QuirionDataRetriever quirionDataRetriever = new QuirionDataRetriever(tempdir);
-        quirionDataRetriever.fetchData();
+        try (Browser browser = BrowserLauncher.createChromium()) {
+            quirionDataRetriever.fetchData(browser);
+        }
 
         assertThat(tempdir).isNotEmptyDirectory();
 

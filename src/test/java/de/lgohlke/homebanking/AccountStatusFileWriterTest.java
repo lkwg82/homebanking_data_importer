@@ -1,5 +1,6 @@
 package de.lgohlke.homebanking;
 
+import com.microsoft.playwright.Browser;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -92,7 +93,7 @@ public class AccountStatusFileWriterTest {
     private record MyDataFromBankRetriever(Path tempdir) implements DataFromBankRetriever {
 
         @Override
-        public void fetchData() {
+        public void fetchData(Browser browser) {
             // ok
         }
 

@@ -1,5 +1,8 @@
 package de.lgohlke.homebanking;
 
+import com.microsoft.playwright.Browser;
+import org.apache.commons.lang3.NotImplementedException;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -14,7 +17,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface DataFromBankRetriever {
-    void fetchData();
+    default void fetchData(Browser browser) {
+        throw new NotImplementedException();
+    }
 
     Path dataDirectory();
 

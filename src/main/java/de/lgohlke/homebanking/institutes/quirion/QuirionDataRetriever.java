@@ -4,7 +4,6 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import de.lgohlke.homebanking.AccountStatus;
 import de.lgohlke.homebanking.AccountStatusCSVWriter;
-import de.lgohlke.homebanking.BrowserLauncher;
 import de.lgohlke.homebanking.DataFromBankRetriever;
 import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.institutes.BankingURL;
@@ -18,14 +17,12 @@ import java.util.List;
 @Slf4j
 public record QuirionDataRetriever(Path dataDirectory) implements DataFromBankRetriever {
     @Override
-    public void fetchData() {
+    public void fetchData(Browser browser) {
         KeepassCredentialsRetriever credentialsRetriever = new KeepassCredentialsRetriever();
         AccountStatusCSVWriter accountStatusCSVWriter = new AccountStatusCSVWriter(dataDirectory);
 
         for (LoginCredential loginCredential : credentialsRetriever.retrieveFor(BankingURL.QUIRION)) {
-            try (Browser browser = BrowserLauncher.createChromium()) {
-                BrowserContext context = browser.newContext();
-
+            try (BrowserContext context = browser.newContext()) {
                 InstitutePage page = new QuirionPage(context, loginCredential);
                 page.open();
                 page.login();
