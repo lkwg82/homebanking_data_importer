@@ -161,6 +161,9 @@
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
+                                    <dependencyReducedPomLocation>
+                                        ${build.directory}/reduced_pom.xml
+                                    </dependencyReducedPomLocation>
                                     <artifactSet>
                                         <excludes>
                                             <exclude>classworlds:classworlds</exclude>
