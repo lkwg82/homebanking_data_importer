@@ -34,12 +34,8 @@ public class KeepassProxyCredentialRetriever {
             var id_key_map = List.of(Map.of("id", id, "key", key));
             return keepassProxyAccess.getLogins(url, "", true, id_key_map);
         } finally {
-            if (keepassProxyAccess.connect()) {
-                log.info("closing");
-                keepassProxyAccess.shutdown();
-                keepassProxyAccess.closeConnection();
-                keepassProxyAccess.getScheduler().shutdownNow();
-            }
+            log.info("closing");
+            keepassProxyAccess.shutdown();
         }
     }
 }
