@@ -87,6 +87,7 @@ class TradeRepublicPage implements InstitutePage {
     public List<AccountStatus> fetchAccountData() {
         page.navigate("https://app.traderepublic.com/settings/accounts");
         page.waitForLoadState();
+        Thread.sleep(1_000);
         String iban = page.locator("xpath=//dt[text()='IBAN']/following-sibling::dd[1]").textContent();
 
         page.navigate("https://app.traderepublic.com/profile/transactions");

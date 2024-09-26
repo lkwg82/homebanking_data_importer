@@ -1,6 +1,8 @@
 package de.lgohlke.homebanking;
 
 import com.microsoft.playwright.Browser;
+import de.lgohlke.homebanking.institutes.dkb.DKBDataRetriever;
+import de.lgohlke.homebanking.institutes.quirion.QuirionDataRetriever;
 import de.lgohlke.homebanking.institutes.scalablecapital.ScalableCapitalDataRetriever;
 import de.lgohlke.homebanking.institutes.traderepublic.TradeRepublicDataRetriever;
 
@@ -21,8 +23,8 @@ public class MainDataRetriever {
 
     void execute(Path dataDir) {
         List<DataFromBankRetriever> retrievers = List.of(
-//                new DKBDataRetriever(dataDir.resolve("dkb")),
-//                new QuirionDataRetriever(dataDir.resolve("quirion")),
+                new DKBDataRetriever(dataDir.resolve("dkb")),
+                new QuirionDataRetriever(dataDir.resolve("quirion")),
                 new TradeRepublicDataRetriever(dataDir.resolve("traderepublic")),
                 new ScalableCapitalDataRetriever(dataDir.resolve("scalablecapital"))
         );
@@ -37,5 +39,7 @@ public class MainDataRetriever {
             new AccountStatusCSVWriter(dataDir).writeSummaryToCSV(statuses);
             System.out.println(dataDir);
         }
+
+        System.out.println("°°° Fertig °°°");
     }
 }
