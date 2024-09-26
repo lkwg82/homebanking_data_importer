@@ -15,9 +15,8 @@ public class QuirionDataRetrieverTest {
     @Test
     @Disabled(value = "keepass needs unlocked")
     void testBrowser(@TempDir() Path tempdir) {
-        QuirionDataRetriever quirionDataRetriever = new QuirionDataRetriever(tempdir);
         try (Browser browser = BrowserLauncher.createChromium()) {
-            quirionDataRetriever.fetchData(browser);
+            new QuirionDataRetriever(tempdir).fetchData(browser);
         }
 
         assertThat(tempdir).isNotEmptyDirectory();
