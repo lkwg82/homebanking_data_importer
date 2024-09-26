@@ -37,6 +37,11 @@ class TradeRepublicPage implements InstitutePage {
         page.waitForLoadState();
 
         log.info("TR page loaded");
+
+        Locator cookieBanner = page.locator(".consentCard__card .buttonBase__title");
+        if (cookieBanner.count() > 0) {
+            cookieBanner.nth(0).click();
+        }
     }
 
     @SneakyThrows
@@ -53,6 +58,7 @@ class TradeRepublicPage implements InstitutePage {
                 String pin_at_pos = password.substring(i, i + 1);
                 locator2.pressSequentially(pin_at_pos);
             }
+            Thread.sleep(1_000);
 
             if (mfa_waiting(page)) {
                 log.warn(">>>> MFA bestätigen");
