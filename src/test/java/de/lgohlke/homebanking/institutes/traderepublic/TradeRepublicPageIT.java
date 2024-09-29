@@ -8,6 +8,8 @@ import de.lgohlke.homebanking.LoginCredential;
 import de.lgohlke.homebanking.institutes.InstitutePage;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TradeRepublicPageIT {
@@ -28,7 +30,10 @@ class TradeRepublicPageIT {
                 Page page = iPage.getPage();
                 String headline = page.locator(".loginPhoneNumber h2").textContent();
 
-                assertThat(headline).isEqualTo("Gib deine Telefonnummer ein");
+                assertThat(headline).isIn(List.of(
+                        "Gib deine Telefonnummer ein", // deutsch
+                        "Log in with your phone number" // english
+                ));
             }
         }
     }
