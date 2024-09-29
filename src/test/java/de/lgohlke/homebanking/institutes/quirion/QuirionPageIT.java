@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuirionPageIT {
     @Test
     void test_login_Page() {
-        try (Browser browser = BrowserLauncher.createChromium()) {
+        try (Browser browser = BrowserLauncher.createHeadlessChromium()) {
             BrowserContext context = browser.newContext();
             LoginCredential credential = new LoginCredential("name", "password");
             QuirionPage qPage = new QuirionPage(context, credential);

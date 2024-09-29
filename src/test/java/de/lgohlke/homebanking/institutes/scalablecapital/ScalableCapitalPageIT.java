@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ScalableCapitalPageIT {
     @Test
     void test_login_Page() {
-        try (Browser browser = BrowserLauncher.createChromium()) {
+        try (Browser browser = BrowserLauncher.createHeadlessChromium()) {
             BrowserContext context = browser.newContext();
             LoginCredential credential = new LoginCredential("name", "password");
             InstitutePage iPage = new ScalableCapitalPage(context, credential);
