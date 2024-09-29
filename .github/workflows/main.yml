@@ -26,7 +26,7 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Install Playwright Dependencies
-        run: sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
+      #      - name: Install Playwright Dependencies
+      #        run: sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
       - name: Build and Test with Maven
         run: ./mvnw -B verify
