@@ -1,0 +1,54 @@
+:toc:
+:toc-title: Content
+
+== Goal
+
+Downloads information of account balances into csv files (via browser instrumentation).
+
+Status: alpha (works but feels like a script)
+
+== Credential:
+
+1. are fetched from keepass via browser interaction protocol see
+link:./src/test/java/de/lgohlke/homebanking/keepass/KeepassProxyAccessTest.java[KeepassProxyAccessTest]
+
+2. Keepass Token is saved in (see link:./src/main/java/de/lgohlke/homebanking/keepass/KeepassProxyCredentialRetriever.java[KeepassProxyCredentialRetriever])
+
+[source,java]
+----
+include::./src/main/java/de/lgohlke/homebanking/keepass/KeepassProxyCredentialRetriever.java[tag=keepassfile]
+----
+
+== execution
+
+1. build with maven `./build_package.sh`
+
+2. invoke data importer with
+
+[source]
+----
+java -jar target/homebanking_data_importer-1.0-SNAPSHOT.jar output_dir/
+----
+
+link:./src/main/java/de/lgohlke/homebanking/MainDataRetriever.java[MainDataRetriever.java]
+
+see files in `output_dir/`
+
+'''
+
+configured institutes in
+link:./src/main/java/de/lgohlke/homebanking/MainDataRetriever.java[MainDataRetriever.java]:
+
+[source,java]
+----
+...
+include::./src/main/java/de/lgohlke/homebanking/MainDataRetriever.java[tag=list_of_institutes]
+...
+----
+
+credentials are retrieved from keepass with urls configured in link:./src/main/java/de/lgohlke/homebanking/institutes/BankingURL.java[BankingURL.java]
+
+[source,java,lines]
+----
+include::./src/main/java/de/lgohlke/homebanking/institutes/BankingURL.java[lines=8..]
+----

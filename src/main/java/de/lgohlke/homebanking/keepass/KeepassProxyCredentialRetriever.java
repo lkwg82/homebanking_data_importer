@@ -12,7 +12,9 @@ public class KeepassProxyCredentialRetriever {
 
     public Map<String, Object> retrieveLoginsForUrl(String url) {
 
+        // tag::keepassfile[]
         var sopsDecryptor = new SopsDecryptor("keepass.enc.yaml");
+        // end::keepassfile[]
         String content = sopsDecryptor.getContent();
         var lines = content.split("\\n");
         var id = lines[0].replaceFirst("id: ", "");

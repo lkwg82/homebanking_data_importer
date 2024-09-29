@@ -22,12 +22,14 @@ public class MainDataRetriever {
     }
 
     void execute(Path dataDir) {
+        // tag::list_of_institutes[]
         List<DataFromBankRetriever> retrievers = List.of(
                 new DKBDataRetriever(dataDir.resolve("dkb")),
                 new QuirionDataRetriever(dataDir.resolve("quirion")),
                 new TradeRepublicDataRetriever(dataDir.resolve("traderepublic")),
                 new ScalableCapitalDataRetriever(dataDir.resolve("scalablecapital"))
         );
+        // end::list_of_institutes[]
         try (Browser browser = BrowserLauncher.createChromium()) {
             List<AccountStatus> statuses = retrievers.stream()
                                                      .map(retriever -> {
