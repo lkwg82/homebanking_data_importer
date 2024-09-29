@@ -8,6 +8,7 @@ import lombok.val;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +34,16 @@ public class SopsDecryptor {
         }
     }
 
+    private static boolean isBinaryAvailable(String... command) {
+        try {
+            Process process = new ProcessBuilder(command).start();
+            process.waitFor();  // Warte, bis der Prozess beendet ist
+            return true;  // Wenn kein Fehler auftritt, existiert das Binary
+        } catch (IOException | InterruptedException e) {
+            return false;  // Wenn ein Fehler auftritt, ist das Binary nicht im Pfad
+        }
+    }
+
     @SneakyThrows
     private void decrypt(StringBuilder stdout, StringBuilder stderr) {
 
@@ -40,7 +51,11 @@ public class SopsDecryptor {
         log.info("reading from {}", absolute_path_to_file);
         checkFile(Paths.get(absolute_path_to_file));
 
-        ProcessBuilder processBuilder = new ProcessBuilder(BIN_SOPS, "--verbose", "--decrypt", absolute_path_to_file);
+        String sops_command = retrieveSopsCommand();
+        ProcessBuilder processBuilder = new ProcessBuilder(sops_command,
+                                                           "--verbose",
+                                                           "--decrypt",
+                                                           absolute_path_to_file);
         Process process = processBuilder.start();
 
         try (var reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -64,6 +79,18 @@ public class SopsDecryptor {
         if (exitCode != 0) {
             throw new IllegalStateException("sops Kommando ist fehlgeschlagen.");
         }
+    }
+
+    private String retrieveSopsCommand() {
+        if (isBinaryAvailable("sops", "--disable-version-check", "--version")) {
+            log.info("use sops from PATH");
+            return "sops";
+        }
+        if (isBinaryAvailable(BIN_SOPS, "--disable-version-check", "--version")) {
+            log.info("use sops from {}", BIN_SOPS);
+            return BIN_SOPS;
+        }
+        throw new IllegalStateException("could not find sops executable");
     }
 
     private static void checkFile(Path path) throws FileNotFoundException {
