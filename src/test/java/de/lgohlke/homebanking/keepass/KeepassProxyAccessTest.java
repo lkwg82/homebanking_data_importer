@@ -26,7 +26,7 @@ public class KeepassProxyAccessTest {
 //        }
         // add new ones for each dev cycle
         val assId = "test";
-        val keyPair = "BLBfj0SxUJNGE7JVOHBoUrDXf9zSo3ebDMKtBVqQrH8=";
+        val keyPair = "BLBfj0SxUJNGE7JVOHBoUrDXf9zSo3ebDMKtBVqQrH8="; // gitleaks:allow
 
         System.out.println(assId);
         System.out.println(keyPair);
