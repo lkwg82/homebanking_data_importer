@@ -84,4 +84,5 @@ jobs:
         run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
       - name: Run headless test
         uses: coactions/setup-xvfb@v1
-        with: mvn verify -DskipShade=true
+        with:
+          run: mvn verify -DskipShade=true
