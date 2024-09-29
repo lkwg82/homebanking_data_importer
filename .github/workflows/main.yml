@@ -82,7 +82,5 @@ jobs:
         run: mvn -B install -D skipTests --no-transfer-progress -DskipShade=true
       - name: Ensure browsers are installed
         run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
-      - name: Run headless test
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: mvn verify -DskipShade=true
+      - name: run tests
+        run: mvn verify -DskipShade=true

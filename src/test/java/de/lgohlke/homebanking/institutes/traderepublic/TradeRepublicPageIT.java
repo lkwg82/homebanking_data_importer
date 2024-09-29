@@ -14,16 +14,22 @@ class TradeRepublicPageIT {
     @Test
     void test_login_Page() {
         try (Browser browser = BrowserLauncher.createHeadlessChromium()) {
-            BrowserContext context = browser.newContext();
-            LoginCredential credential = new LoginCredential("name", "password");
-            InstitutePage iPage = new TradeRepublicPage(context, credential);
+            Browser.NewContextOptions options = new Browser.NewContextOptions();
+            // needed to run headless
+            String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36";
+            options.setUserAgent(userAgent);
 
-            iPage.open(); // action
+            try (BrowserContext context = browser.newContext(options)) {
+                LoginCredential credential = new LoginCredential("name", "password");
+                InstitutePage iPage = new TradeRepublicPage(context, credential);
 
-            Page page = iPage.getPage();
-            String headline = page.locator(".loginPhoneNumber h2").textContent();
+                iPage.open(); // action
 
-            assertThat(headline).isEqualTo("Gib deine Telefonnummer ein");
+                Page page = iPage.getPage();
+                String headline = page.locator(".loginPhoneNumber h2").textContent();
+
+                assertThat(headline).isEqualTo("Gib deine Telefonnummer ein");
+            }
         }
     }
 }
