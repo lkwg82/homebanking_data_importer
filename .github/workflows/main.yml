@@ -30,3 +30,5 @@ jobs:
       #        run: sudo mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install-deps"
       - name: Build and Test with Maven
         run: ./mvnw -B verify -DskipTests
+      - name: Build and Test with Maven
+        run: ./mvnw -B surefire:test -Dtest=SopsDecryptorTest
