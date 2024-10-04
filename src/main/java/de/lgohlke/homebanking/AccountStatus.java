@@ -19,6 +19,10 @@ public record AccountStatus(@NonNull Date date, IBAN iban, BigDecimal balance, S
         return parse(now, iban, balance, name);
     }
 
+    public static AccountStatus parse(@NonNull String date, @NonNull String iban, @NonNull String balance, @NonNull String name) {
+        return parse(Date.valueOf(date), iban, balance, name);
+    }
+
     public static AccountStatus parse(@NonNull Date date, @NonNull String iban, @NonNull String balance, String name) {
         return new AccountStatus(date, IBAN.valueOf(iban), parseBalance(balance), name);
     }
