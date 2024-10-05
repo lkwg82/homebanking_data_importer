@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -25,10 +24,11 @@ public class AccountStatusCSVWriter {
         statuses.forEach(this::writeSingleStatusToCSV);
     }
 
+    @Deprecated(forRemoval = true)
     public void writeSummaryToCSV(Collection<AccountStatus> statuses) {
-        var statusLines = statuses.stream()
-                                  .map(AccountStatusCSVWriter::convertAccountStatusToCSVLine)
-                                  .collect(Collectors.joining("\n"));
+        AccountStatusCSVConverter converter = new AccountStatusCSVConverter();
+        List<String> lines = converter.convert(statuses);
+        var statusLines = String.join("\n", lines);
         try {
             log.info("writing {}", SUMMARY_CSV);
             Files.writeString(dataDirectory.resolve(SUMMARY_CSV), statusLines);
@@ -48,11 +48,11 @@ public class AccountStatusCSVWriter {
         Path filePath = folderPath.resolve(fileName);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()))) {
-            writer.write("Date|IBAN|Balance|Name");
-            writer.newLine();
-
-            writer.write(convertAccountStatusToCSVLine(status));
-            writer.newLine();
+            AccountStatusCSVConverter converter = new AccountStatusCSVConverter();
+            for (String line : converter.convert(status)) {
+                writer.write(line);
+                writer.newLine();
+            }
 
             log.info("CSV-Datei erfolgreich erstellt: {}", filePath);
 
@@ -78,14 +78,5 @@ public class AccountStatusCSVWriter {
                 log.error("Fehler beim Erstellen des Ordners: {}", e.getMessage());
             }
         }
-    }
-
-    private static String convertAccountStatusToCSVLine(AccountStatus status) {
-        return String.format("%s|%s|%s|%s",
-                             status.date(),
-                             status.iban(),
-                             status.balanceAsStr(),
-                             status.name()
-        );
     }
 }
