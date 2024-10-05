@@ -57,6 +57,7 @@ class TradeRepublicPage implements InstitutePage {
             for (int i = 0; i < 4; i++) {
                 String pin_at_pos = password.substring(i, i + 1);
                 locator2.pressSequentially(pin_at_pos);
+                Thread.sleep(300);
             }
             Thread.sleep(1_000);
 

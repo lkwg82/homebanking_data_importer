@@ -11,30 +11,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
 public class AccountStatusCSVWriter {
-    public static final String SUMMARY_CSV = "summary.csv";
     private final Path dataDirectory;
 
     public void writeStatusesToCSV(List<AccountStatus> statuses) {
         statuses.forEach(this::writeSingleStatusToCSV);
-    }
-
-    @Deprecated(forRemoval = true)
-    public void writeSummaryToCSV(Collection<AccountStatus> statuses) {
-        AccountStatusCSVConverter converter = new AccountStatusCSVConverter();
-        List<String> lines = converter.convert(statuses);
-        var statusLines = String.join("\n", lines);
-        try {
-            log.info("writing {}", SUMMARY_CSV);
-            Files.writeString(dataDirectory.resolve(SUMMARY_CSV), statusLines);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private void writeSingleStatusToCSV(AccountStatus status) {
