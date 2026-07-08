@@ -33,7 +33,7 @@
         <dependency>
             <groupId>nl.garvelink.oss</groupId>
             <artifactId>iban</artifactId>
-            <version>1.15.0</version>
+            <version>1.17.0</version>
         </dependency>
 
         <!-- Lombok -->
